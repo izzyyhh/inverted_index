@@ -24,4 +24,6 @@ test:
     stage: test
     script:
         - npm run lint
-        - npm run test
+        - npm run test basic.spec.js
+        - npm run test stop-words.spec.js
+        - npm run test word-delimiter.spec.js
