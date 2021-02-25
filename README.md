@@ -12,10 +12,10 @@ npm install
 4. Check that the build runs successfully on GitLab, at least [basic.spec.js](basic.spec.js).
   * Remove the other tests from [.gitlab-ci.yml](.gitlab-ci.yml) if you choose not to implement them.
 
-# Format code with Prettier
+# Format code
 
 ```bash
-npm run prettier
+npm run lint-fix
 ```
 
 # Start CLI
