@@ -1,5 +1,6 @@
 import fs from "fs";
 import { intersection, intersectMany } from "./intersection";
+import stopwords from "./stopwords";
 import { doc } from "prettier";
 
 export default class Searcher {
@@ -60,6 +61,7 @@ export default class Searcher {
             .replace(punctuationRegex, "")
             .replace(newLineRegex, "")
             .toLowerCase()
-            .split(" ");
+            .split(" ")
+            .filter(term => !stopwords.includes(term));
     }
 }
