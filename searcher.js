@@ -1,4 +1,5 @@
 import fs from "fs";
+import { intersection, intersectMany } from "./intersection";
 import { doc } from "prettier";
 
 export default class Searcher {
@@ -9,7 +10,21 @@ export default class Searcher {
 
     search(query) {
         // TODO: Search the indexed files.
-        return [];
+        const terms = this.termifyText(query);
+        const termPostings = [];
+
+        if (terms.length == 0) return [];
+
+        terms.forEach(term => {
+            if (this.invertedIndex.has(term)) {
+                termPostings.push(this.invertedIndex.get(term));
+            } else {
+                termPostings.push([]);
+            }
+        });
+
+        if (termPostings.length == 1) return termPostings[0];
+        return intersectMany(termPostings);
     }
 
     getInvertedIndexFromFiles(files) {
