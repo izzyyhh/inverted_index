@@ -37,19 +37,29 @@ export default class Searcher {
                 const terms = this.termifyText(documentText);
 
                 terms.forEach(term => {
-                    if (invertedIndex.has(term)) {
-                        const postingList = new Set(invertedIndex.get(term));
-                        postingList.add(file);
-                        invertedIndex.set(term, [...postingList]);
-                    } else {
-                        invertedIndex.set(term, [file]);
+                    // if term is delimited by hyphen, add each term to the index, occured term is excluded
+                    if (term.includes("-")) {
+                        const delimitedTerms = term.split("-");
+                        delimitedTerms.forEach(term => this.addTermToInvertedIndex(invertedIndex, term, file));
                     }
+                    // always add the occurred term
+                    this.addTermToInvertedIndex(invertedIndex, term, file);
                 });
             });
 
             return invertedIndex;
         } catch (err) {
             console.error(err);
+        }
+    }
+
+    addTermToInvertedIndex(invertedIndex, term, file) {
+        if (invertedIndex.has(term)) {
+            const postingList = new Set(invertedIndex.get(term));
+            postingList.add(file);
+            invertedIndex.set(term, [...postingList]);
+        } else {
+            invertedIndex.set(term, [file]);
         }
     }
 
