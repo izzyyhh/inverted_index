@@ -16,6 +16,7 @@ install:
     stage: build
     script:
         - npm install
+        - npm run lint
     artifacts:
         paths:
             - node_modules/
@@ -23,7 +24,9 @@ install:
 test:
     stage: test
     script:
-        - npm run lint
-        - npm run test basic.spec.js
-        - npm run test stop-words.spec.js
-        - npm run test word-delimiter.spec.js
+        - npm run test-ci
+    artifacts:
+        when: always
+        reports:
+            junit:
+                - junit.xml
